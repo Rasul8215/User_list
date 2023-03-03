@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "./Button";
 import InputField from "./InputField";
+import { useNavigate } from "react-router-dom";
+import { UsersContext } from "../App";
 
 const CreateUserModal = (props) => {
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("Male");
   const [city, setCity] = useState("");
+
+  const [_, setUsers] = useContext(UsersContext);
+
+  const navigate = useNavigate();
 
   return (
     <div
@@ -70,7 +76,7 @@ const CreateUserModal = (props) => {
           <Button
             type="secondary"
             onClick={() => {
-              props.closeModal(false);
+              navigate("/");
             }}
           >
             Cancel
@@ -78,7 +84,7 @@ const CreateUserModal = (props) => {
           <Button
             type="primary"
             onClick={() => {
-              props.createUser((previous) => {
+              setUsers((previous) => {
                 return [
                   {
                     name,
@@ -90,11 +96,12 @@ const CreateUserModal = (props) => {
                   ...previous,
                 ];
               });
-              setName("")
-              setDob("")
-              setGender("Male")
-              setCity("")
-              props.closeModal(false)
+              setName("");
+              setDob("");
+              setGender("Male");
+              setCity("");
+
+              navigate("/");
             }}
           >
             Submit
